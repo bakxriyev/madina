@@ -2,7 +2,7 @@
 
 export default function ThankYouPage() {
   const handleJoinTelegram = () => {
-    window.open("https://t.me/+DLZk7SoLlm9mMWQ6", "_blank")
+    window.open("https://it_zoneuz", "_blank")
     setTimeout(() => {
       window.location.href = "/"
     }, 500)

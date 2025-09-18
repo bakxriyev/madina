@@ -90,7 +90,7 @@ export default function RegistrationModal({ isOpen, onClose, onSubmit }: Registr
 
     const sendToBackend = async () => {
       try {
-        const backendUrl = "https://backend.buyuk-zamon.uz"
+        const backendUrl = "https://backend.madinafayzullayevna.uz"
 
         const response = await fetch(`${backendUrl}/users`, {
           method: "POST",
