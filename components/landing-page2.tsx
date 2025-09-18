@@ -87,7 +87,7 @@ export default function LandingPage() {
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-red-500/15 to-transparent rounded-full blur-xl scale-110"></div>
 
               <Image
-                src="/madina-fayzullayeva-nobg.png"
+                src="/madinaaa.png"
                 alt="Madina Fayzullayeva"
                 width={220}
                 height={280}

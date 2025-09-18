@@ -78,7 +78,7 @@ export default function LandingPage() {
             <div className="relative">
               <div className="w-80 h-96 relative">
                 <Image
-                  src="/madina-fayzullayeva-nobg.png"
+                  src="/madinaaa.png"
                   alt="Madina Fayzullayeva"
                   width={320}
                   height={384}
