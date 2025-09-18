@@ -160,6 +160,20 @@ export default function LandingPage() {
         </div>
       </div>
 
+      <footer className="w-full py-6 mt-6 relative z-10">
+        <div className="flex items-center justify-center gap-3">
+          <p className="text-gray-500 text-sm">Created by</p>
+          <a
+            href="https://t.me/it_zoneuz"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:opacity-80 transition-opacity duration-300 transform hover:scale-105"
+          >
+            <Image src="/itzone.png" alt="IT Zone Telegram" width={90} height={90} className="cursor-pointer" />
+          </a>
+        </div>
+      </footer>
+
       <RegistrationModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSubmit={handleModalSubmit} />
     </div>
   )
