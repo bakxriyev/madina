@@ -153,7 +153,8 @@ export default function LandingPage() {
             <div className="absolute inset-0 bg-gradient-to-br from-red-400/20 to-transparent rounded-xl animate-pulse delay-1500"></div>
             <span className="relative z-10 drop-shadow-lg">BEPUL DARSGA QATNASHISH</span>
             <div className="w-7 h-7 bg-white rounded-full flex items-center justify-center relative z-10 shadow-lg animate-bounce delay-300">
-              <span className="text-red-600 text-sm font-bold">→</span>
+              <span className="text-red-600 text-sm font-bold">←</span>
+
             </div>
           </button>
         </div>
