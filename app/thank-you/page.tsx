@@ -2,7 +2,7 @@
 
 export default function ThankYouPage() {
   const handleJoinTelegram = () => {
-    window.open("https://it_zoneuz", "_blank")
+    window.open("https://t.me/+Zm2I2OOL22QxZTdi", "_blank")
     setTimeout(() => {
       window.location.href = "/"
     }, 500)
@@ -12,7 +12,7 @@ export default function ThankYouPage() {
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 flex flex-col items-center justify-center p-4">
       <div className="text-center max-w-2xl w-full">
         <h1 className="text-xl md:text-2xl font-bold mb-4 leading-tight text-white">
-          Ruhiy shifo topish yo'lida muhim qadam!
+          Muammolar ildizini topish yo'lida muhim qadam!
         </h1>
 
         <h2 className="text-lg md:text-xl font-semibold mb-6 leading-tight text-gray-300">
