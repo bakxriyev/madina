@@ -37,9 +37,9 @@ export default function LandingPage() {
   }
 
   const benefits = [
-    "Muhokama qilish oqibatlari va undan qutilish texnikalarini",
-    "Har bir Afsusingiz sabab sizga beriladigan sinovlar oqibatini",
-    "Asli bu qonunlar, programmalar miyaga qanday ustanovka bo'lib qolishini o'rganasiz.",
+    "Muammolarning ustki qismi bilan emas, ularning ildizi bilan ishlashni",
+    "Bu muammolarning ildizini qanday aniqlash mumkinligini",
+    "Asl ildizni topgach, berilayotgan vaziyatlarni qabul qilishni o'rganasiz.",
   ]
 
   return (
@@ -72,10 +72,9 @@ export default function LandingPage() {
         <div className="bg-red-600 rounded-lg px-4 py-4 mb-2 mx-2 shadow-xl border border-red-500/30">
           <p className="text-white text-sm leading-relaxed">
             <span className="text-white font-semibold">
-              Muhokama va Afsuslanish sabab hayotingizga kirib kelayotgan
+              Muammolaringiz ildizini aniqlab, yechim topgan holda
             </span>{" "}
-            Muammolarning ildizni aniqlab, ularning{" "}
-            <span className="text-whihte font-semibold">yechim kalitini toping!</span>
+            qayta-qayta kurslarda o'qishga nuqta qo'yasiz{" "}
           </p>
         </div>
 
