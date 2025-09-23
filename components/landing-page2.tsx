@@ -65,16 +65,16 @@ export default function LandingPage() {
 
         <div className="text-center mb-2">
           <h1 className="text-white text-2xl font-bold leading-tight uppercase tracking-wide px-2">
-            RUHIY OG'RIQLARNING ASL ILDIZI
+            Barcha Muammolarning Asl Ildizi va Yechimi
           </h1>
         </div>
 
         <div className="bg-red-600 rounded-lg px-4 py-4 mb-2 mx-2 shadow-xl border border-red-500/30">
           <p className="text-white text-sm leading-relaxed">
             <span className="text-white font-semibold">
-              Muammolaringiz ildizini aniqlab, yechim topgan holda
+              Hayotingizda ro'y berayotgan ayni damdagi muammoyingiz ildizini aniqlab,
             </span>{" "}
-            qayta-qayta kurslarda o'qishga nuqta qo'yasiz{" "}
+            yechim topgan holda, hayotingizni eng Baxtli  tomonga o'zgartiring va Qalb Halovatini toping!{" "}
           </p>
         </div>
 
