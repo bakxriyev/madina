@@ -3,5 +3,5 @@ import LandingPage from "../components/landing-page"
 import LandingPage3 from "@/components/landing-page3"
 
 export default function Page() {
-  return <LandingPage3/>
+  return <LandingPage2/>
 }
