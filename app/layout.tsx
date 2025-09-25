@@ -33,8 +33,7 @@ export default function RootLayout({
           {`
             !function(f,b,e,v,n,t,s){
               if(f.fbq)return;
-              n=f.fbq=function(){n.callMethod ? 
-              n.callMethod.apply(n,arguments) : n.queue.push(arguments)};
+              n=f.fbq=function(){n.callMethod ? n.callMethod.apply(n,arguments) : n.queue.push(arguments)};
               if(!f._fbq)f._fbq=n;
               n.push=n;
               n.loaded=!0;
@@ -60,7 +59,7 @@ export default function RootLayout({
         </noscript>
         {/* End Meta Pixel Code */}
 
-        {/* Yandex.Metrika counter */}
+        {/* Yandex.Metrika Counter */}
         <Script id="yandex-metrika" strategy="afterInteractive">
           {`
             (function(m,e,t,r,i,k,a){
@@ -69,14 +68,11 @@ export default function RootLayout({
               for (var j = 0; j < document.scripts.length; j++) {
                 if (document.scripts[j].src === r) { return; }
               }
-              k=e.createElement(t),
-              a=e.getElementsByTagName(t)[0],
-              k.async=1,
-              k.src=r,
-              a.parentNode.insertBefore(k,a)
-            })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=104283397', 'ym');
+              k=e.createElement(t),a=e.getElementsByTagName(t)[0],
+              k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+            })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=104284533', 'ym');
 
-            ym(104283397, 'init', {
+            ym(104284533, 'init', {
               ssr:true,
               webvisor:true,
               clickmap:true,
@@ -89,13 +85,13 @@ export default function RootLayout({
         <noscript>
           <div>
             <img
-              src="https://mc.yandex.ru/watch/104283397"
+              src="https://mc.yandex.ru/watch/104284533"
               style={{ position: 'absolute', left: '-9999px' }}
               alt=""
             />
           </div>
         </noscript>
-        {/* End Yandex.Metrika counter */}
+        {/* End Yandex.Metrika Counter */}
 
         <Analytics />
       </body>
