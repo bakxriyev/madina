@@ -58,8 +58,6 @@ export default function LandingPage() {
 
         <div className="bg-gradient-to-r from-red-600 to-red-700 rounded-lg px-4 py-4 mb-2 mx-2 shadow-xl border border-red-500/30">
           <p className="text-white text-sm leading-relaxed">
-            <span className="text-yellow-300 font-semibold">⚡ DIQQAT: Faqat 2 daqiqa ichida ro'yxatdan o'ting!</span>
-            <br />
             <span className="text-white font-semibold">
               Hayotingizda ro'y berayotgan ayni damdagi muammoyingiz ildizini aniqlab,
             </span>{" "}
@@ -116,7 +114,7 @@ export default function LandingPage() {
 
         <div className="text-center mb-2 px-2">
         
-          <p className="text-gray-400 text-xs">Bepul qatnashish uchun bosing</p>
+          <p className="text-gray-400 text-xs">Bepul qatnashish uchun tugmani bosib yopiq telegram kanalga o`ting</p>
         </div>
 
         <div className="mb-2 px-2">
