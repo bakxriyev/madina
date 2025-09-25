@@ -23,7 +23,7 @@ export default function LandingPage() {
     return () => clearInterval(timer)
   }, [])
 
-  const telegramChannelLink = "https://t.me/+Zm2I2OOL22QxZTdi" // Replace with your actual Telegram channel link
+  const telegramChannelLink = "https://t.me/+6BAY3gLs0N44ODYy" // Replace with your actual Telegram channel link
 
   const benefits = [
     "Muammolarning ustki qismi bilan emas, ularning ildizi bilan ishlashni",

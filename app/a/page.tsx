@@ -24,7 +24,7 @@ export default function LandingPage() {
   }, [])
 
   const handleRegister = () => {
-    window.location.href = "/thank-you"
+    window.location.href = "/a/thank-you"
   }
 
   const benefits = [

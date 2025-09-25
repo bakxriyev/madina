@@ -108,7 +108,7 @@ export default function RegistrationModal1({ isOpen, onClose, onSubmit }: Regist
         }
 
         onClose()
-        window.open("https://t.me/+Zm2I2OOL22QxZTdi", "_blank")
+        window.open("https://t.me/+SyqCtuBYYsRmMDA6", "_blank")
       } catch (err) {
         console.error("Registration error:", err)
         setError("Ma'lumotlarni yuborishda xatolik yuz berdi. Qaytadan urinib ko'ring.")
