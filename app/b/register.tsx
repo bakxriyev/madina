@@ -17,6 +17,7 @@ export default function RegistrationModal1({ isOpen, onClose, onSubmit }: Regist
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [phoneError, setPhoneError] = useState<string | null>(null)
   const phoneInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -27,8 +28,15 @@ export default function RegistrationModal1({ isOpen, onClose, onSubmit }: Regist
         tg_user: "",
       })
       setError(null)
+      setPhoneError(null)
     }
   }, [isOpen])
+
+  const isPhoneNumberValid = (phoneNumber: string) => {
+    // Remove +998 prefix and check if remaining digits are at least 9
+    const digitsOnly = phoneNumber.replace("+998", "").replace(/\s/g, "")
+    return digitsOnly.length >= 9
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -40,6 +48,13 @@ export default function RegistrationModal1({ isOpen, onClose, onSubmit }: Regist
         setFormData((prev) => ({ ...prev, [name]: "+998" + numericValue.replace("+998", "") }))
       } else {
         setFormData((prev) => ({ ...prev, [name]: numericValue }))
+      }
+
+      const updatedPhone = numericValue.startsWith("+998") ? numericValue : "+998" + numericValue.replace("+998", "")
+      if (!isPhoneNumberValid(updatedPhone) && updatedPhone.length > 4) {
+        setPhoneError("Telefon raqami to'liq emas. Masalan: +998901234567")
+      } else {
+        setPhoneError(null)
       }
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }))
@@ -83,8 +98,15 @@ export default function RegistrationModal1({ isOpen, onClose, onSubmit }: Regist
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    if (!isPhoneNumberValid(formData.phone_number)) {
+      setPhoneError("Telefon raqamini to'liq kiriting!")
+      return
+    }
+
     setLoading(true)
     setError(null)
+    setPhoneError(null)
 
     const sendToBackend = async () => {
       try {
@@ -126,6 +148,8 @@ export default function RegistrationModal1({ isOpen, onClose, onSubmit }: Regist
       input.selectionStart = input.selectionEnd = input.value.length
     }, 0)
   }
+
+  const isFormValid = formData.full_name.trim() !== "" && isPhoneNumberValid(formData.phone_number)
 
   if (!isOpen) return null
 
@@ -198,7 +222,7 @@ export default function RegistrationModal1({ isOpen, onClose, onSubmit }: Regist
               >
                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
               </svg>
-              Telefon raqamingiz:
+              Telefon raqamingiz: <span className="text-red-400">*</span>
             </label>
             <input
               id="phone_number"
@@ -210,13 +234,35 @@ export default function RegistrationModal1({ isOpen, onClose, onSubmit }: Regist
               onKeyDown={(e) => handleKeyDown(e, "+998")}
               onFocus={handleFocus}
               required
-              className="w-full px-4 py-3 bg-[#0a2a4a]/60 border border-[#4db5ff]/20 rounded-lg focus:ring-2 focus:ring-[#4db5ff]/50 text-white placeholder-white/50"
+              className={`w-full px-4 py-3 bg-[#0a2a4a]/60 border rounded-lg focus:ring-2 text-white placeholder-white/50 ${
+                phoneError ? "border-red-500/50 focus:ring-red-500/50" : "border-[#4db5ff]/20 focus:ring-[#4db5ff]/50"
+              }`}
               placeholder="+998 XX XXX XX XX"
             />
+            {phoneError && (
+              <div className="text-red-400 text-sm flex items-center">
+                <svg className="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    fillRule="evenodd"
+                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                {phoneError}
+              </div>
+            )}
           </div>
 
-          <button type="submit" disabled={loading} className="relative w-full">
-            <div className="relative bg-[#4db5ff] rounded-lg py-3 px-6 flex items-center justify-center">
+          <button
+            type="submit"
+            disabled={loading || !isFormValid}
+            className={`relative w-full ${!isFormValid ? "opacity-50 cursor-not-allowed" : ""}`}
+          >
+            <div
+              className={`relative rounded-lg py-3 px-6 flex items-center justify-center ${
+                isFormValid ? "bg-[#4db5ff] hover:bg-[#3da5ef] transition-colors" : "bg-gray-500"
+              }`}
+            >
               {loading ? (
                 <>
                   <svg
@@ -242,10 +288,25 @@ export default function RegistrationModal1({ isOpen, onClose, onSubmit }: Regist
                   <span className="text-[#041a2e] font-bold">Yuborilmoqda...</span>
                 </>
               ) : (
-                <span className="text-[#041a2e] font-bold">YOPIQ KANALGA QOSHILISH</span>
+                <span className="text-[#041a2e] font-bold">
+                  {isFormValid ? "YOPIQ KANALGA QOSHILISH" : "MA'LUMOTLARNI TO'LDIRING"}
+                </span>
               )}
             </div>
           </button>
+
+          {!isFormValid && (
+            <div className="text-yellow-400 text-sm text-center flex items-center justify-center">
+              <svg className="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  fillRule="evenodd"
+                  d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              Barcha majburiy maydonlarni to'ldiring
+            </div>
+          )}
         </form>
       </div>
     </div>
