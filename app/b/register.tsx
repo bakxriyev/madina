@@ -18,6 +18,8 @@ export default function RegistrationModal1({ isOpen, onClose, onSubmit }: Regist
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [phoneError, setPhoneError] = useState<string | null>(null)
+  const [nameError, setNameError] = useState<string | null>(null)
+  const [submitError, setSubmitError] = useState<string | null>(null)
   const phoneInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -29,11 +31,12 @@ export default function RegistrationModal1({ isOpen, onClose, onSubmit }: Regist
       })
       setError(null)
       setPhoneError(null)
+      setNameError(null)
+      setSubmitError(null)
     }
   }, [isOpen])
 
   const isPhoneNumberValid = (phoneNumber: string) => {
-    // Remove +998 prefix and check if remaining digits are at least 9
     const digitsOnly = phoneNumber.replace("+998", "").replace(/\s/g, "")
     return digitsOnly.length >= 9
   }
@@ -41,6 +44,10 @@ export default function RegistrationModal1({ isOpen, onClose, onSubmit }: Regist
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setError(null)
+    setSubmitError(null)
+    if (name === "full_name") {
+      setNameError(null)
+    }
 
     if (name === "phone_number") {
       const numericValue = value.replace(/[^\d+]/g, "")
@@ -99,47 +106,65 @@ export default function RegistrationModal1({ isOpen, onClose, onSubmit }: Regist
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
+    setNameError(null)
+    setPhoneError(null)
+    setSubmitError(null)
+    setError(null)
+
+    let hasError = false
+
+    if (!formData.full_name.trim()) {
+      setNameError("Ismingizni kiriting!")
+      hasError = true
+    }
+
     if (!isPhoneNumberValid(formData.phone_number)) {
       setPhoneError("Telefon raqamini to'liq kiriting!")
-      return
+      hasError = true
+    }
+
+    if (!formData.full_name.trim() && !isPhoneNumberValid(formData.phone_number)) {
+      setSubmitError("Ism va telefon raqamini to'ldiring!")
+    } else if (!formData.full_name.trim()) {
+      setSubmitError("Ismingizni kiriting!")
+    } else if (!isPhoneNumberValid(formData.phone_number)) {
+      setSubmitError("Telefon raqamini to'liq kiriting!")
+    }
+
+    if (hasError) {
+      return // This prevents form submission
     }
 
     setLoading(true)
-    setError(null)
-    setPhoneError(null)
 
-    const sendToBackend = async () => {
-      try {
-        const backendUrl = "https://backend.madinafayzullayevna.uz"
+    try {
+      const backendUrl = "https://backend.madinafayzullayevna.uz"
 
-        const response = await fetch(`${backendUrl}/users`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          body: JSON.stringify({
-            full_name: formData.full_name,
-            phone_number: formData.phone_number,
-            tg_user: formData.tg_user || "",
-          }),
-        })
+      const response = await fetch(`${backendUrl}/users`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          full_name: formData.full_name,
+          phone_number: formData.phone_number,
+          tg_user: formData.tg_user || "",
+        }),
+      })
 
-        if (!response.ok) {
-          throw new Error(`Server error: ${response.status}`)
-        }
-
-        onClose()
-        window.open("https://t.me/+SyqCtuBYYsRmMDA6", "_blank")
-      } catch (err) {
-        console.error("Registration error:", err)
-        setError("Ma'lumotlarni yuborishda xatolik yuz berdi. Qaytadan urinib ko'ring.")
-      } finally {
-        setLoading(false)
+      if (!response.ok) {
+        throw new Error(`Server error: ${response.status}`)
       }
-    }
 
-    await sendToBackend()
+      onClose()
+      window.open("https://t.me/+SyqCtuBYYsRmMDA6", "_blank")
+    } catch (err) {
+      console.error("Registration error:", err)
+      setError("Ma'lumotlarni yuborishda xatolik yuz berdi. Qaytadan urinib ko'ring.")
+    } finally {
+      setLoading(false)
+    }
   }
 
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -184,6 +209,12 @@ export default function RegistrationModal1({ isOpen, onClose, onSubmit }: Regist
             </div>
           )}
 
+          {submitError && (
+            <div className="bg-red-500/20 border border-red-500/50 text-red-200 px-4 py-3 rounded-lg text-sm">
+              {submitError}
+            </div>
+          )}
+
           <div className="space-y-2">
             <label htmlFor="full_name" className="text-white/80 text-sm flex items-center">
               <svg
@@ -194,10 +225,10 @@ export default function RegistrationModal1({ isOpen, onClose, onSubmit }: Regist
                 stroke="currentColor"
                 strokeWidth="2"
               >
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <path d="M20 21v-2a4 4 0 01-4-4H8a4 4 0 00-4 4v2"></path>
                 <circle cx="12" cy="7" r="4"></circle>
               </svg>
-              Ismingiz:
+              Ismingiz: <span className="text-red-400">*</span>
             </label>
             <input
               id="full_name"
@@ -205,9 +236,23 @@ export default function RegistrationModal1({ isOpen, onClose, onSubmit }: Regist
               value={formData.full_name}
               onChange={handleChange}
               required
-              className="w-full px-4 py-3 bg-[#0a2a4a]/60 border border-[#4db5ff]/20 rounded-lg focus:ring-2 focus:ring-[#4db5ff]/50 text-white placeholder-white/50"
+              className={`w-full px-4 py-3 bg-[#0a2a4a]/60 border rounded-lg focus:ring-2 text-white placeholder-white/50 ${
+                nameError ? "border-red-500/50 focus:ring-red-500/50" : "border-[#4db5ff]/20 focus:ring-[#4db5ff]/50"
+              }`}
               placeholder="Ismingizni kiriting"
             />
+            {nameError && (
+              <div className="text-red-400 text-sm flex items-center">
+                <svg className="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    fillRule="evenodd"
+                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                {nameError}
+              </div>
+            )}
           </div>
 
           <div className="space-y-2">
@@ -220,7 +265,7 @@ export default function RegistrationModal1({ isOpen, onClose, onSubmit }: Regist
                 stroke="currentColor"
                 strokeWidth="2"
               >
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
               </svg>
               Telefon raqamingiz: <span className="text-red-400">*</span>
             </label>
@@ -253,16 +298,8 @@ export default function RegistrationModal1({ isOpen, onClose, onSubmit }: Regist
             )}
           </div>
 
-          <button
-            type="submit"
-            disabled={loading || !isFormValid}
-            className={`relative w-full ${!isFormValid ? "opacity-50 cursor-not-allowed" : ""}`}
-          >
-            <div
-              className={`relative rounded-lg py-3 px-6 flex items-center justify-center ${
-                isFormValid ? "bg-[#4db5ff] hover:bg-[#3da5ef] transition-colors" : "bg-gray-500"
-              }`}
-            >
+          <button type="submit" className="relative w-full">
+            <div className="relative rounded-lg py-3 px-6 flex items-center justify-center bg-[#4db5ff] hover:bg-[#3da5ef] transition-colors">
               {loading ? (
                 <>
                   <svg
@@ -288,25 +325,10 @@ export default function RegistrationModal1({ isOpen, onClose, onSubmit }: Regist
                   <span className="text-[#041a2e] font-bold">Yuborilmoqda...</span>
                 </>
               ) : (
-                <span className="text-[#041a2e] font-bold">
-                  {isFormValid ? "YOPIQ KANALGA QOSHILISH" : "MA'LUMOTLARNI TO'LDIRING"}
-                </span>
+                <span className="text-[#041a2e] font-bold">YOPIQ KANALGA QOSHILISH</span>
               )}
             </div>
           </button>
-
-          {!isFormValid && (
-            <div className="text-yellow-400 text-sm text-center flex items-center justify-center">
-              <svg className="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                <path
-                  fillRule="evenodd"
-                  d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              Barcha majburiy maydonlarni to'ldiring
-            </div>
-          )}
         </form>
       </div>
     </div>
